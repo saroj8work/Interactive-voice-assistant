@@ -153,7 +153,10 @@ def test_domain_knowledge_endpoint():
 
 
 def test_domain_knowledge_query_endpoint():
-    req = KnowledgeQueryRequest(query="refund policy", top_k=2)
+    # Reload domain knowledge file if modified
+    from app.knowledge.markdown_loader import domain_knowledge
+    domain_knowledge.load()
+    req = KnowledgeQueryRequest(query="PCR protocol", top_k=2)
     res = query_domain_knowledge(req)
     assert res.found is True
-    assert "refund" in res.answer.lower()
+    assert "pcr" in res.answer.lower() or "polymerase" in res.answer.lower()

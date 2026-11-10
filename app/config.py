@@ -39,8 +39,14 @@ class Settings(BaseModel):
     anthropic_api_key: str = os.getenv("ANTHROPIC_API_KEY", "")
     ollama_base_url: str = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
 
+    # Security & Voice Authorization Configuration
+    admin_voice_passkey: str = os.getenv("ADMIN_VOICE_PASSKEY", "4291")
+    require_admin_authorization: bool = os.getenv("REQUIRE_ADMIN_AUTHORIZATION", "true").lower() in ("true", "1", "yes")
+    audit_signing_secret: str = os.getenv("AUDIT_SIGNING_SECRET", "eln_gxp_audit_secret_2026")
+
     # Paths
     base_dir: Path = BASE_DIR
+    data_dir: Path = DATA_DIR
     notes_dir: Path = NOTES_DIR
     audio_tmp_dir: Path = AUDIO_TMP_DIR
     domain_knowledge_file: Path = Path(os.getenv("DOMAIN_KNOWLEDGE_FILE", str(DOMAIN_KNOWLEDGE_FILE)))
@@ -51,13 +57,13 @@ class Settings(BaseModel):
             return self.model_name
         
         defaults = {
-            "gemini": "gemini-1.5-flash",
+            "gemini": "gemini-3.5-flash",
             "groq": "llama-3.3-70b-versatile",
             "openai": "gpt-4o-mini",
             "anthropic": "claude-3-5-haiku-latest",
             "ollama": "llama3.2",
         }
-        return defaults.get(self.model_provider, "gemini-1.5-flash")
+        return defaults.get(self.model_provider, "gemini-3.5-flash")
 
     def is_configured(self) -> bool:
         """Checks if valid credentials exist for the selected provider."""

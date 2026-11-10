@@ -10,6 +10,7 @@ from app.tools.notes import NoteTool
 from app.tools.timer import TimerTool
 from app.tools.calculator import CalculatorTool
 from app.tools.search import KnowledgeSearchTool
+from app.tools.lifesciences import DilutionCalculatorTool, MolarityCalculatorTool
 
 
 class ToolRegistry:
@@ -24,6 +25,8 @@ class ToolRegistry:
         self.register(TimerTool())
         self.register(CalculatorTool())
         self.register(KnowledgeSearchTool())
+        self.register(DilutionCalculatorTool())
+        self.register(MolarityCalculatorTool())
 
     def register(self, tool: BaseTool):
         self._tools[tool.name] = tool

@@ -10,6 +10,7 @@ from pydantic import BaseModel, Field
 from app.audio.stt import stt_service
 from app.audio.tts import tts_service
 from app.agent.conversational import conversational_agent, ConversationalTurnResponse
+from app.agent.llm_client import UIAction
 from app.nlu.models import IntentType, IntentClassificationResult
 from app.planner.schema import ActionPlan
 
@@ -19,6 +20,7 @@ class AgentExecutionResult(BaseModel):
     classification: IntentClassificationResult
     plan: Optional[ActionPlan] = None
     executed_steps: list[Dict[str, Any]] = Field(default_factory=list)
+    ui_actions: list[UIAction] = Field(default_factory=list)
     final_response: str
     audio_base64: Optional[str] = None
     execution_time_ms: float
@@ -61,6 +63,7 @@ class VoiceAgentOrchestrator:
             classification=classification,
             plan=turn.plan,
             executed_steps=turn.executed_tools,
+            ui_actions=turn.ui_actions,
             final_response=turn.assistant_reply,
             audio_base64=turn.audio_base64,
             execution_time_ms=turn.turn_latency_ms,

@@ -72,8 +72,9 @@ def root():
 
 
 if __name__ == "__main__":
+    # Reload trigger 2026-11-05
     uvicorn.run(
-        "main.py:app",
+        "main:app",
         host=settings.host,
         port=settings.port,
         reload=settings.debug,
